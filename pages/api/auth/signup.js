@@ -1,4 +1,3 @@
-import { connect } from "http2";
 import { hashPassword } from "../../../lib/auth";
 import { connectToDatabase } from "../../../lib/db,js";
 
@@ -16,12 +15,19 @@ async function handler(req, res){
 
     const db = client.db();
 
+    // user exist logic
+    const existingUser = await db.collection('users').findOne({email: email})
+    if(existingUser){
+        res.status(422).json({ message: 'User name taken / user exist.'})
+        client.close();
+        return; 
+    }
+
     // authentication 
     const hashedPassword = await hashPassword(password); 
-
     const result = await db.collection('users').insertOne({
         email: email,
-        password: hashPassword
+        password: hashedPassword,
     }); 
 
     res.status(201).json({message: 'Created user!'}); 
