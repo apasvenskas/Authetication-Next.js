@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import { connectToDatabase } from "../../../lib/db,js";
 import { verifyPassword } from "../../../lib/auth";
-import Providers from 'next-auth/providers'
+import { providers } from 'next-auth/react'
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 export default NextAuth({
     // configuration options for next-auth
@@ -10,7 +11,7 @@ export default NextAuth({
     },
 
     providers: [
-        Providers.Credentials({
+        CredentialsProvider({
             async authorize(credentials) {
                const client = await connectToDatabase();
 
