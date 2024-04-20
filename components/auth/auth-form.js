@@ -41,7 +41,9 @@ function AuthForm() {
         email: enteredEmail,
         password: enteredPassword,
       })
-      console.log(result);
+      if(!result.error){
+        // set some auth state (with use redux change the webpage, for example nav bar.)
+      }
     } else{
       try{
         const result = await createUser(enteredEmail, enteredPassword);
